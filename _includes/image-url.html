@@ -1,12 +1,13 @@
 {%- comment -%}
 Sets "thumb" and "large" for include.path. The resized copies are used when
-they were made, otherwise both are the uploaded file.
+they were made, otherwise both are the uploaded file. uri_escape is not used
+since it changes how accents are stored, so the link would miss the file.
 {%- endcomment -%}
 {%- assign image = site.data.images[include.path] -%}
 {%- if image -%}
   {%- assign thumb = image.thumb -%}
   {%- assign large = image.large -%}
 {%- else -%}
-  {%- assign thumb = include.path | uri_escape | replace: "#", "%23" | replace: "?", "%3F" -%}
+  {%- assign thumb = include.path | url_encode | replace: "+", "%20" | replace: "%2F", "/" -%}
   {%- assign large = thumb -%}
 {%- endif -%}

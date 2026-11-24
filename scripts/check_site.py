@@ -5,6 +5,7 @@ only ever used the GitHub website.
 """
 
 import argparse
+import posixpath
 import re
 import sys
 from collections.abc import Mapping, Sequence
@@ -187,6 +188,8 @@ class PageParser(HTMLParser):
 
 def check_built(site: Path, problems: list[str]) -> None:
     pages = sorted(site.rglob("*.html"))
+    # A Mac ignores case and how accents are stored, the web server does not
+    files = {p.relative_to(site).as_posix() for p in site.rglob("*") if p.is_file()}
     if not pages:
         problems.append(f"{site} has no pages.")
     for page in pages:
@@ -201,9 +204,9 @@ def check_built(site: Path, problems: list[str]) -> None:
             parts = urlsplit(target)
             if parts.scheme or parts.netloc or not parts.path:
                 continue
-            base = site if parts.path.startswith("/") else page.parent
-            path = base / unquote(parts.path).lstrip("/")
-            if not (path.is_file() or (path / "index.html").is_file()):
+            link = posixpath.join("/", name, "..", unquote(parts.path))
+            path = posixpath.normpath(link).lstrip("/")
+            if files.isdisjoint((path, posixpath.join(path, "index.html"))):
                 problems.append(f"{name}: broken link to {target}")
 
 
