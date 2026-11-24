@@ -6,18 +6,17 @@ permalink: /
 {%- assign a = site.data.artist -%}
 {%- assign home_path = "" -%}
 {%- assign home_link = "/2d/" -%}
-{%- include collect.html section="3d" -%}
-{%- if ordered.size > 0 -%}
-  {%- assign first_key = ordered | first -%}
-  {%- include work-info.html key=first_key -%}
-  {%- assign home_path = views[0] -%}{%- assign home_link = "/3d/" -%}{%- assign home_alt = title -%}
-{%- endif -%}
-{%- include collect.html section="2d" -%}
-{%- if ordered.size > 0 -%}
-  {%- assign first_key = ordered | first -%}
-  {%- include work-info.html key=first_key -%}
-  {%- assign home_path = views[0] -%}{%- assign home_link = "/2d/" -%}{%- assign home_alt = title -%}
-{%- endif -%}
+{%- assign home_sections = "3d,2d" | split: "," -%}
+{%- for section in home_sections -%}
+  {%- include collect.html section=section -%}
+  {%- if ordered.size > 0 -%}
+    {%- assign first_key = ordered | first -%}
+    {%- include work-info.html key=first_key -%}
+    {%- assign home_path = views[0] -%}{%- assign home_title = title -%}
+    {%- assign home_year = info.year -%}{%- assign home_label = label -%}
+    {%- capture home_link -%}/{{ section }}/{%- endcapture -%}
+  {%- endif -%}
+{%- endfor -%}
 {%- if a.home_image and a.home_image != "" -%}
   {%- assign wanted_path = "/" | append: a.home_image | replace: "//", "/" -%}
   {%- for f in site.static_files -%}
@@ -28,25 +27,65 @@ permalink: /
         {%- assign home_key = parts[3] -%}
         {%- include collect.html section=home_section -%}
         {%- include work-info.html key=home_key -%}
-        {%- assign home_path = wanted_path -%}{%- assign home_alt = title -%}
+        {%- assign home_path = wanted_path -%}{%- assign home_title = title -%}
+        {%- assign home_year = info.year -%}{%- assign home_label = label -%}
         {%- capture home_link -%}/{{ home_section }}/{%- endcapture -%}
       {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
 {%- endif -%}
+{%- assign words = a.name | split: " " -%}
+{%- assign longest = 1 -%}
+{%- for word in words -%}{%- if word.size > longest -%}{%- assign longest = word.size -%}{%- endif -%}{%- endfor -%}
 <div class="home">
-  {%- if home_path != "" %}
-  {%- include image-url.html path=home_path %}
-  <a class="home-image" href="{{ home_link }}"><img src="{{ large | escape }}" alt="{{ home_alt | escape }}" fetchpriority="high"></a>
-  {%- endif %}
-  <div class="home-text">
-    <h1>{{ a.name | escape }}</h1>
-    {%- if a.tagline and a.tagline != "" %}
-    <p class="tagline">{{ a.tagline | escape }}</p>
+  <section class="hero{% if home_path != "" %} hero-art{% endif %}" style="--word: {{ longest }}; --name: {{ a.name.size | at_least: 1 }}">
+    <div class="lamp" aria-hidden="true"><div class="beam"></div></div>
+    <div class="hero-text">
+      <h1>{% for word in words %}<span>{{ word | escape }}</span> {% endfor %}</h1>
+      {%- if a.tagline and a.tagline != "" %}
+      <p class="tagline">{{ a.tagline | escape }}</p>
+      {%- endif %}
+    </div>
+    {%- if home_path != "" %}
+    {%- include image-url.html path=home_path %}
+    <div class="hero-work">
+      <a class="home-image" href="{{ home_link }}"><img src="{{ large | escape }}" alt="{{ home_title | escape }}" fetchpriority="high"{% if image %} width="{{ image.width }}" height="{{ image.height }}"{% endif %}></a>
+      <div class="hero-label">
+        <p><cite>{{ home_title | escape }}</cite>{% if home_year %}, {{ home_year | escape }}{% endif %}</p>
+        {%- if home_label != "" %}
+        <p class="quiet">{{ home_label | escape }}</p>
+        {%- endif %}
+      </div>
+    </div>
     {%- endif %}
-    <ul class="doors">
-      <li><a href="/2d/">2D works</a></li>
-      <li><a href="/3d/">3D works</a></li>
-    </ul>
+  </section>
+  <div class="rooms">
+    {%- assign room_sections = "2d,3d" | split: "," -%}
+    {%- for section in room_sections %}
+    {%- include collect.html section=section -%}
+    {%- assign room_path = "" -%}
+    {%- comment -%}The picture over the rooms is only repeated when there is no other{%- endcomment -%}
+    {%- for key in ordered limit: 2 -%}
+      {%- include work-info.html key=key -%}
+      {%- if room_path == "" or room_path == home_path -%}
+        {%- assign room_path = views[0] -%}{%- assign room_title = title -%}
+      {%- endif -%}
+    {%- endfor %}
+    <a class="room room-{{ section }}" href="/{{ section }}/">
+      <div class="doorway">
+        {%- if room_path != "" %}
+        {%- include image-url.html path=room_path %}
+        <img src="{{ thumb | escape }}" alt="{{ room_title | escape }}" loading="lazy" decoding="async"{% if image %} width="{{ image.width }}" height="{{ image.height }}"{% endif %}>
+        {%- else %}
+        <div class="waiting" aria-hidden="true"></div>
+        {%- endif %}
+      </div>
+      <div class="room-label">
+        <h2>{{ section | upcase }} works</h2>
+        <p>{% if ordered.size == 0 or placeholders %}New work is coming soon{% elsif ordered.size == 1 %}1 work{% else %}{{ ordered.size }} works{% endif %}</p>
+      </div>
+    </a>
+    {%- endfor %}
   </div>
 </div>
+<script src="/assets/home.js" defer></script>

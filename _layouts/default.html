@@ -15,7 +15,9 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
+    {%- unless page.url == "/" %}
     <a class="site-name" href="/">{{ artist }}</a>
+    {%- endunless %}
     <nav aria-label="Main">
       <ul>
         <li><a href="/2d/"{% if page.url == "/2d/" %} aria-current="page"{% endif %}>2D</a></li>
