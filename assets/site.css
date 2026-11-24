@@ -39,12 +39,12 @@ h1 { font-weight: 500; line-height: 1.2; margin: 0; text-wrap: balance; }
   align-items: baseline;
   justify-content: space-between;
   gap: 0.25rem 2rem;
-  padding: 1.5rem var(--gutter);
+  padding: 1.25rem var(--gutter);
 }
 .site-name { font-weight: 600; text-decoration: none; }
 .site-header ul { display: flex; flex-wrap: wrap; gap: 0 1.5rem; margin: 0; padding: 0; list-style: none; }
 .site-header nav { margin-left: auto; }
-.site-header nav a { display: inline-block; padding: 0.4rem 0; color: var(--quiet); text-decoration: none; }
+.site-header nav a { display: inline-block; padding: 0.6rem 0; color: var(--quiet); text-decoration: none; }
 .site-header nav a:hover, .site-header nav a[aria-current] { color: var(--ink); }
 .site-header nav a[aria-current] { text-decoration: underline; }
 
@@ -98,10 +98,19 @@ main { flex: 1; padding: clamp(1rem, 3vw, 2.5rem) var(--gutter) 5rem; }
 .home-image { display: block; }
 .home-image img { width: auto; height: auto; max-height: 62vh; max-height: 62svh; box-shadow: 0 1.75rem 3.5rem rgb(0 0 0 / 0.75), 0 0 6rem rgb(var(--warm) / 0.1); }
 .hero-label { font-size: 0.9375rem; }
-@media (min-width: 60rem) {
-  .hero { min-height: 74vh; min-height: 74svh; }
-  .hero-art { --x: 74%; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+/* Tablets and up hang the picture beside the name, with the light over it */
+@media (min-width: 40rem) {
+  .hero-art { --gap: clamp(2rem, 4vw, 4rem); --x: calc(75% - var(--gutter) / 2 + var(--gap) / 4); column-gap: var(--gap); grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .hero-art .hero-work { justify-self: center; }
+  .hero-art .home-image img { max-height: min(62svh, max(16rem, 100svh - 20rem)); }
+}
+@media (min-width: 40rem) and (orientation: portrait) {
+  .hero-art { min-height: 52vh; min-height: 52svh; }
+}
+@media (min-width: 60rem) and (orientation: landscape) {
+  .hero { min-height: 74vh; min-height: 74svh; }
+}
+@media (min-width: 60rem) {
   .hero:not(.hero-art) h1 { font-size: min(13rem, 100cqi / (var(--name) * 0.54)); }
   .hero:not(.hero-art) h1 span { display: inline; }
 }
@@ -131,8 +140,8 @@ main { flex: 1; padding: clamp(1rem, 3vw, 2.5rem) var(--gutter) 5rem; }
 /* A frame with nothing in it, or a plinth with nothing on it */
 .waiting { width: 58%; aspect-ratio: 4 / 5; border: clamp(0.35rem, 0.9vw, 0.8rem) solid #2a2016; box-shadow: 0 0.6rem 1.4rem rgb(0 0 0 / 0.4), inset 0 0 1rem rgb(0 0 0 / 0.35); }
 .room-3d .waiting { position: absolute; bottom: 7%; width: 34%; aspect-ratio: 3 / 5; border: 0; border-top: clamp(0.3rem, 0.7vw, 0.6rem) solid #f2f4f7; background: linear-gradient(90deg, #cfd5de, #8b929d); box-shadow: 0 0.4rem 1.4rem rgb(0 0 0 / 0.45); }
+@media (min-width: 40rem) { .doorway { aspect-ratio: 1; } }
 /* Light from the door, falling on the floor in front of it */
-@media (min-width: 60rem) { .doorway { aspect-ratio: 1; } }
 .room-label { position: relative; padding: 1.5rem 0.5rem 3rem; }
 .room-label::before { content: ""; position: absolute; inset: 0 -6%; background: linear-gradient(rgb(var(--light) / 0.22), transparent); clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%); transition: opacity 0.5s; opacity: 0.75; }
 .room:hover .room-label::before { opacity: 1; }
@@ -160,6 +169,8 @@ main { flex: 1; padding: clamp(1rem, 3vw, 2.5rem) var(--gutter) 5rem; }
 .work { display: grid; grid-row: span 2; grid-template-rows: subgrid; align-items: end; margin-bottom: clamp(2rem, 4vw, 3.5rem); min-width: 0; }
 .frame { display: block; width: fit-content; max-width: 100%; }
 .frame img { width: auto; height: auto; max-height: 34rem; transition: opacity 0.2s; }
+/* Two to a row, a tall picture leaves a hole beside it, so keep it shorter */
+@media (min-width: 40rem) and (max-width: 75rem) { .frame img { max-height: 24rem; } }
 .frame:hover img { opacity: 0.85; }
 .label { align-self: start; font-size: 0.9375rem; overflow-wrap: anywhere; max-width: 26rem; }
 .description { margin-top: 0.5rem; }
