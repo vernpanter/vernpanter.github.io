@@ -1,0 +1,13 @@
+#!/bin/sh
+# Runs everything CI runs. A push that only deletes branches has nothing to
+# check, git sends a local sha of all zeros for those.
+set -eu
+checks=no
+while read -r _ local_sha _ _; do
+  case "$local_sha" in
+    *[!0]*) checks=yes ;;
+  esac
+done
+[ "$checks" = no ] && exit 0
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
+make -s check

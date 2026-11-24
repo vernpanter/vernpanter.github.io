@@ -1,0 +1,13 @@
+_site/
+derived/
+_data/images.json
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+.bundle/
+vendor/
+.venv/
+__pycache__/
+.DS_Store
+.claude/worktrees/
+.claude/settings.local.json

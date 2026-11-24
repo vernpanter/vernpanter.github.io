@@ -1,0 +1,5 @@
+#!/bin/sh
+# Runs the quick checks. The full set runs in pre-push.
+set -eu
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
+make -s types test

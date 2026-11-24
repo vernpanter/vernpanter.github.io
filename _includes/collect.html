@@ -1,0 +1,40 @@
+{%- comment -%}
+Finds the works in art/<section>. Sets "prefix", "details", "paths" (every
+image) and "ordered" (one key per work, a file name or a folder name). Works in
+the details file come first, the rest follow by name.
+{%- endcomment -%}
+{%- assign prefix = "/art/" | append: include.section | append: "/" -%}
+{%- assign data_name = "works_" | append: include.section -%}
+{%- assign details = site.data[data_name] -%}
+{%- assign paths = "" | split: "" -%}
+{%- assign keys = "" | split: "" -%}
+{%- assign ordered = "" | split: "" -%}
+{%- for f in site.static_files -%}
+  {%- assign head = f.path | slice: 0, prefix.size -%}
+  {%- if head == prefix -%}
+    {%- assign ext = f.extname | downcase -%}
+    {%- assign usable = false -%}
+    {%- if site.data.images[f.path] -%}{%- assign usable = true -%}{%- endif -%}
+    {%- case ext -%}
+      {%- when ".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif" -%}{%- assign usable = true -%}
+    {%- endcase -%}
+    {%- if usable -%}{%- assign paths = paths | push: f.path -%}{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign paths = paths | sort_natural -%}
+{%- for path in paths -%}
+  {%- assign parts = path | split: "/" -%}
+  {%- assign keys = keys | push: parts[3] -%}
+{%- endfor -%}
+{%- assign keys = keys | uniq -%}
+{%- for item in details -%}
+  {%- assign wanted = item.file | append: "" | downcase -%}
+  {%- for key in keys -%}
+    {%- assign low = key | downcase -%}
+    {%- if low == wanted -%}{%- assign ordered = ordered | push: key -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- for key in keys -%}
+  {%- assign ordered = ordered | push: key -%}
+{%- endfor -%}
+{%- assign ordered = ordered | uniq -%}

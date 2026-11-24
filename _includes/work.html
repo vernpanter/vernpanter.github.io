@@ -1,0 +1,29 @@
+{%- include work-info.html key=include.key -%}
+{%- capture alt -%}{{ title }}{% if info.medium %}, {{ info.medium }}{% endif %}{%- endcapture %}
+<li class="work">
+  {%- for path in views -%}
+  {%- include image-url.html path=path -%}
+  {%- capture attrs %}href="{{ large | escape }}" data-view data-title="{{ title | escape }}" data-year="{{ info.year | escape }}" data-label="{{ label | escape }}" data-description="{{ info.description | escape }}" data-index="{{ forloop.index }}" data-total="{{ forloop.length }}"{% endcapture -%}
+  {%- if forloop.first %}
+  <a class="frame" {{ attrs }}><img src="{{ thumb | escape }}" alt="{{ alt | escape }}" loading="lazy" decoding="async"{% if image %} width="{{ image.width }}" height="{{ image.height }}"{% endif %}></a>
+  <div class="label">
+    <p><cite>{{ title | escape }}</cite>{% if info.year %}, {{ info.year | escape }}{% endif %}</p>
+    {%- if label != "" %}
+    <p class="quiet">{{ label | escape }}</p>
+    {%- endif %}
+    {%- if info.description %}
+    <p class="description">{{ info.description | escape }}</p>
+    {%- endif %}
+    {%- if forloop.length > 1 %}
+    <p class="views"><span class="quiet">Views</span>
+    {%- endif %}
+  {%- endif %}
+  {%- if forloop.length > 1 %}
+      <a {% if forloop.first %}href="{{ large | escape }}" data-opens-first{% else %}{{ attrs }}{% endif %} aria-label="{{ title | escape }}, view {{ forloop.index }}">{{ forloop.index }}</a>
+  {%- endif %}
+  {%- if forloop.last %}
+    {%- if forloop.length > 1 %}</p>{% endif %}
+  </div>
+  {%- endif %}
+  {%- endfor %}
+</li>

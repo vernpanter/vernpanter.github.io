@@ -1,0 +1,52 @@
+---
+layout: default
+title: Home
+permalink: /
+---
+{%- assign a = site.data.artist -%}
+{%- assign home_path = "" -%}
+{%- assign home_link = "/2d/" -%}
+{%- include collect.html section="3d" -%}
+{%- if ordered.size > 0 -%}
+  {%- assign first_key = ordered | first -%}
+  {%- include work-info.html key=first_key -%}
+  {%- assign home_path = views[0] -%}{%- assign home_link = "/3d/" -%}{%- assign home_alt = title -%}
+{%- endif -%}
+{%- include collect.html section="2d" -%}
+{%- if ordered.size > 0 -%}
+  {%- assign first_key = ordered | first -%}
+  {%- include work-info.html key=first_key -%}
+  {%- assign home_path = views[0] -%}{%- assign home_link = "/2d/" -%}{%- assign home_alt = title -%}
+{%- endif -%}
+{%- if a.home_image and a.home_image != "" -%}
+  {%- assign wanted_path = "/" | append: a.home_image | replace: "//", "/" -%}
+  {%- for f in site.static_files -%}
+    {%- if f.path == wanted_path -%}
+      {%- assign parts = f.path | split: "/" -%}
+      {%- if parts[1] == "art" -%}
+        {%- assign home_section = parts[2] -%}
+        {%- assign home_key = parts[3] -%}
+        {%- include collect.html section=home_section -%}
+        {%- include work-info.html key=home_key -%}
+        {%- assign home_path = wanted_path -%}{%- assign home_alt = title -%}
+        {%- capture home_link -%}/{{ home_section }}/{%- endcapture -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+<div class="home">
+  {%- if home_path != "" %}
+  {%- include image-url.html path=home_path %}
+  <a class="home-image" href="{{ home_link }}"><img src="{{ large | escape }}" alt="{{ home_alt | escape }}" fetchpriority="high"></a>
+  {%- endif %}
+  <div class="home-text">
+    <h1>{{ a.name | escape }}</h1>
+    {%- if a.tagline and a.tagline != "" %}
+    <p class="tagline">{{ a.tagline | escape }}</p>
+    {%- endif %}
+    <ul class="doors">
+      <li><a href="/2d/">2D works</a></li>
+      <li><a href="/3d/">3D works</a></li>
+    </ul>
+  </div>
+</div>

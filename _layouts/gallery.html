@@ -1,0 +1,15 @@
+---
+layout: default
+---
+{%- include collect.html section=page.section -%}
+<h1 class="gallery-title">{{ page.title | escape }}</h1>
+{%- if ordered.size == 0 %}
+<p class="empty">New work is coming soon.</p>
+{%- else %}
+<ul class="works">
+  {%- for key in ordered %}
+  {%- include work.html key=key %}
+  {%- endfor %}
+</ul>
+{%- include viewer.html %}
+{%- endif %}

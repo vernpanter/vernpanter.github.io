@@ -1,0 +1,21 @@
+---
+layout: default
+---
+{%- assign a = site.data.artist -%}
+<article class="text">
+  <h1>{{ page.title | escape }}</h1>
+  {{ content }}
+  {%- if a.email and a.email != "" %}
+  <p class="email"><a href="mailto:{{ a.email | escape }}">{{ a.email | escape }}</a></p>
+  {%- endif %}
+  {%- if a.links and a.links.size > 0 %}
+  <ul class="links">
+    {%- for item in a.links %}
+    <li><a href="{{ item.link | escape }}" rel="me">{{ item.name | escape }}</a></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+  {%- if a.email == "" or a.email == nil %}{% unless a.links and a.links.size > 0 %}
+  <p>Contact details are coming soon.</p>
+  {%- endunless %}{% endif %}
+</article>

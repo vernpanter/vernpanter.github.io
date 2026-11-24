@@ -1,0 +1,18 @@
+[project]
+name = "portfolio-tools"
+version = "0"
+requires-python = ">=3.12"
+dependencies = ["pillow", "pillow-heif", "pyyaml"]
+
+[dependency-groups]
+dev = ["actionlint-py", "pyright", "types-pyyaml"]
+
+[tool.uv]
+package = false
+
+[tool.pyright]
+include = ["scripts", "tests"]
+extraPaths = ["scripts"]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"

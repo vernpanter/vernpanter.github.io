@@ -1,0 +1,19 @@
+# Site settings. To change the artist's name, email or links, edit
+# _data/artist.yml instead of this file.
+url: https://vernpanter.com
+repository: vernpanter/vernpanter.github.io
+
+exclude:
+  - README.md
+  - DEVELOPMENT.md
+  - art/2d/README.md
+  - art/3d/README.md
+  - Gemfile
+  - Gemfile.lock
+  - Makefile
+  - pyproject.toml
+  - uv.lock
+  - scripts
+  - tests
+  - vendor
+  - node_modules

@@ -1,0 +1,37 @@
+{%- comment -%}
+Sets the "views" of the work named include.key, plus its "title", "label" and
+"info". Needs collect.html first.
+{%- endcomment -%}
+{%- assign info = nil -%}
+{%- assign low = include.key | downcase -%}
+{%- for item in details -%}
+  {%- assign wanted = item.file | append: "" | downcase -%}
+  {%- if wanted == low -%}{%- assign info = item -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+{%- assign views = "" | split: "" -%}
+{%- assign is_folder = false -%}
+{%- for path in paths -%}
+  {%- assign parts = path | split: "/" -%}
+  {%- if parts[3] == include.key -%}
+    {%- assign views = views | push: path -%}
+    {%- if parts.size > 4 -%}{%- assign is_folder = true -%}{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign title = info.title | append: "" -%}
+{%- if title == "" -%}
+  {%- assign name = include.key -%}
+  {%- unless is_folder -%}
+    {%- assign bits = include.key | split: "." -%}
+    {%- assign name = bits | pop | join: "." -%}
+  {%- endunless -%}
+  {%- assign name = name | replace: "-", " " | replace: "_", " " | strip -%}
+  {%- assign first = name | slice: 0, 1 | upcase -%}
+  {%- assign rest = name | slice: 1, name.size -%}
+  {%- assign title = first | append: rest -%}
+{%- endif -%}
+{%- assign label = "" | split: "" -%}
+{%- if info.medium -%}{%- assign label = label | push: info.medium -%}{%- endif -%}
+{%- comment -%}info.size would be the number of fields when size is left out{%- endcomment -%}
+{%- assign dims = info["size"] -%}
+{%- if dims -%}{%- assign label = label | push: dims -%}{%- endif -%}
+{%- assign label = label | join: ", " -%}

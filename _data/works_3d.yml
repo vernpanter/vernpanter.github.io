@@ -1,0 +1,15 @@
+# Details for the 3D works. This file is optional, a work with no entry here
+# still shows up with its file name as the title.
+#
+# Works listed here come first, in this order. The rest follow by file name.
+# For a work with several photos, "file" is the name of its folder.
+#
+# Copy the example below for each work and delete the # marks. Keep the quote
+# marks, and leave out any line you do not need.
+#
+# - file: "tall-bird"
+#   title: "Tall Bird"
+#   year: "2026"
+#   medium: "Bronze"
+#   size: "12 x 6 x 6 in"
+#   description: "A sentence or 2 about the work."

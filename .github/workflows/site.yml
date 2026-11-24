@@ -1,0 +1,57 @@
+name: Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: read
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      build_type: ${{ steps.pages.outputs.build_type }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          # The version GitHub Pages builds with
+          ruby-version: 3.3.4
+          bundler-cache: true
+      - uses: astral-sh/setup-uv@v10.4.0
+      - run: uv sync --locked
+      - run: make check
+      # Pages only takes a deploy from here when its source is set to GitHub
+      # Actions. Until then GitHub builds the site from main on its own.
+      - id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          build_type=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type)
+          echo "Pages source: $build_type"
+          echo "build_type=$build_type" >> "$GITHUB_OUTPUT"
+      - if: steps.pages.outputs.build_type == 'workflow'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: check
+    if: needs.check.outputs.build_type == 'workflow'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

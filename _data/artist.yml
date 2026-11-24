@@ -1,0 +1,19 @@
+# Keep the quote marks around everything you type.
+# Anything left as "" stays hidden on the site.
+
+name: "Vern Panter"
+
+# One line under the name on the home page.
+tagline: ""
+
+# Shown on the contact page.
+email: ""
+
+# The picture on the home page, for example "art/2d/blue-door.jpg".
+# Left empty, the site uses the first 2D work, or the first 3D work.
+home_image: ""
+
+# Links on the contact page. Delete the [] and the # marks to use this.
+links: []
+#  - name: "Instagram"
+#    link: "https://www.instagram.com/your-name"
