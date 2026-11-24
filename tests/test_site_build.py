@@ -25,7 +25,8 @@ enable_heic()
 
 SITE_PARTS = ("_config.yml", "_layouts", "_includes", "_data", "assets", "art",
               "2d.html", "3d.html", "404.html", "about.md", "contact.md", "cv.md",
-              "index.html", "README.md", "DEVELOPMENT.md")
+              "index.html", "favicon.ico", "apple-touch-icon.png",
+              "README.md", "DEVELOPMENT.md")
 ACCENTED = unicodedata.normalize("NFD", "Café señor.jpg")
 
 # One odd name per way a file name can break a URL or the page
