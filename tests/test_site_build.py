@@ -1,6 +1,7 @@
 """Builds the real templates with made up art, with and without the copies."""
 
 import html
+import os
 import re
 import shutil
 import subprocess
@@ -24,7 +25,7 @@ enable_heic()
 
 SITE_PARTS = ("_config.yml", "_layouts", "_includes", "_data", "assets", "art",
               "2d.html", "3d.html", "404.html", "about.md", "contact.md", "cv.md",
-              "index.html", "README.md", "DEVELOPMENT.md", "Gemfile", "Gemfile.lock")
+              "index.html", "README.md", "DEVELOPMENT.md")
 ACCENTED = unicodedata.normalize("NFD", "Café señor.jpg")
 
 # One odd name per way a file name can break a URL or the page
@@ -35,6 +36,8 @@ FLAT = ("zebra.jpg", "apple-tree.JPG", "Old House #4.png", "50% off?.jpg",
 def build(root: Path) -> Path:
     result = subprocess.run(
         ["bundle", "exec", "jekyll", "build", "--strict_front_matter"],
+        # CI installs the gems next to this Gemfile, a copy would not find them
+        env={**os.environ, "BUNDLE_GEMFILE": str(ROOT / "Gemfile")},
         cwd=root, capture_output=True, text=True, check=False,
     )
     if result.returncode:
