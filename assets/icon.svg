@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="wall" gradientUnits="userSpaceOnUse" cx="32" cy="14" r="46">
+      <stop offset="0" stop-color="#5a4c36"/>
+      <stop offset=".5" stop-color="#211e1a"/>
+      <stop offset="1" stop-color="#0c0c0b"/>
+    </radialGradient>
+    <radialGradient id="warm" gradientUnits="userSpaceOnUse" cx="30" cy="14" r="44">
+      <stop offset="0" stop-color="#fff3d9"/>
+      <stop offset=".42" stop-color="#f6b75f"/>
+      <stop offset="1" stop-color="#b4481f"/>
+    </radialGradient>
+    <radialGradient id="cool" gradientUnits="userSpaceOnUse" cx="34" cy="14" r="44">
+      <stop offset="0" stop-color="#f1f5ff"/>
+      <stop offset=".42" stop-color="#86a8e4"/>
+      <stop offset="1" stop-color="#26417f"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe9bd"/>
+      <stop offset="1" stop-color="#ffdf9f" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#wall)"/>
+  <path d="M5 13H19.5L32 43V58H24.5Z" fill="url(#warm)"/>
+  <path d="M59 13H44.5L32 43V58H39.5Z" fill="url(#cool)"/>
+  <path d="M28.5 13H35.5L38.5 27.4L32 43L25.5 27.4Z" fill="url(#beam)"/>
+  <path d="M31 0H33V4H36L38 13H26L28 4H31Z" fill="#efe6d2"/>
+</svg>
