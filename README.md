@@ -7,6 +7,13 @@ Everything happens on github.com, so there is nothing to install. Sign in first.
 Changes are live a few minutes after you press the green **Commit changes**
 button.
 
+## Placeholders
+
+The site starts out full of placeholders. The placeholder pictures hide on their
+own once you add a real work to that section (2D and 3D are separate). Replace
+the placeholder words using the links under
+[Change the words](#change-the-words).
+
 ## Add a 2D work
 
 1. Open the [2D upload page](https://github.com/vernpanter/vernpanter.github.io/upload/main/art/2d).

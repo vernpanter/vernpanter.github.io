@@ -37,6 +37,11 @@ def is_image(path: Path) -> bool:
     return path.suffix.lower() in IMAGE_TYPES
 
 
+def is_placeholder(key: str) -> bool:
+    """Return whether a work only stands in until there is real art."""
+    return key.lower().startswith("placeholder")
+
+
 def work_key(root: Path, section: str, path: Path) -> str:
     """Return the name that identifies a work, its file or its folder."""
     return path.relative_to(root / "art" / section).parts[0]

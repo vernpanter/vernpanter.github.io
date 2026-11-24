@@ -142,6 +142,23 @@ class BuildTests(unittest.TestCase):
         for source in sources:
             self.assertTrue((site / unquote(html.unescape(source)).lstrip("/")).is_file(), source)
 
+    def test_placeholders_hide_behind_real_works(self) -> None:
+        self.picture("2d/placeholder-1.jpg")
+        self.picture("3d/placeholder-1/1 front.jpg")
+        self.data("works_2d.yml", '- file: "placeholder-1.jpg"\n  title: "Stand in"\n')
+        site = build(self.root)
+        self.assertEqual(titles(self.page(site, "2d")), ["Stand in"])
+        self.assertEqual(titles(self.page(site, "3d")), ["Placeholder 1"])
+        self.assertEqual((site / "index.html").read_text().count("New work is coming soon"), 2)
+        self.picture("2d/zebra.jpg")
+        site = build(self.root)
+        self.assertEqual(titles(self.page(site, "2d")), ["Zebra"])
+        self.assertEqual(titles(self.page(site, "3d")), ["Placeholder 1"])
+        home = (site / "index.html").read_text(encoding="utf-8")
+        self.assertIn("<p>1 work</p>", home)
+        self.assertNotIn("2d/placeholder", home)
+        self.check(site)
+
     def test_with_copies(self) -> None:
         self.fill()
         self.picture("3d/bowl phone.heic")

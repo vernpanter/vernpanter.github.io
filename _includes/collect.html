@@ -1,7 +1,8 @@
 {%- comment -%}
 Finds the works in art/<section>. Sets "prefix", "details", "paths" (every
-image) and "ordered" (one key per work, a file name or a folder name). Works in
-the details file come first, the rest follow by name.
+image), "ordered" (one key per work, a file name or a folder name) and
+"placeholders". Works in the details file come first, the rest follow by name.
+Names that start with "placeholder" are left out once there is a real work.
 {%- endcomment -%}
 {%- assign prefix = "/art/" | append: include.section | append: "/" -%}
 {%- assign data_name = "works_" | append: include.section -%}
@@ -22,6 +23,18 @@ the details file come first, the rest follow by name.
   {%- endif -%}
 {%- endfor -%}
 {%- assign paths = paths | sort_natural -%}
+{%- assign real = "" | split: "" -%}
+{%- for path in paths -%}
+  {%- assign parts = path | split: "/" -%}
+  {%- assign start = parts[3] | downcase | slice: 0, 11 -%}
+  {%- unless start == "placeholder" -%}{%- assign real = real | push: path -%}{%- endunless -%}
+{%- endfor -%}
+{%- assign placeholders = false -%}
+{%- if real.size > 0 -%}
+  {%- assign paths = real -%}
+{%- elsif paths.size > 0 -%}
+  {%- assign placeholders = true -%}
+{%- endif -%}
 {%- for path in paths -%}
   {%- assign parts = path | split: "/" -%}
   {%- assign keys = keys | push: parts[3] -%}

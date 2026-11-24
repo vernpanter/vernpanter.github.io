@@ -17,7 +17,14 @@ from urllib.parse import unquote, urlsplit
 import yaml
 from PIL import Image, UnidentifiedImageError
 
-from artwork import SECTIONS, enable_heic, is_image, section_files, work_key
+from artwork import (
+    SECTIONS,
+    enable_heic,
+    is_image,
+    is_placeholder,
+    section_files,
+    work_key,
+)
 
 WORK_FIELDS = frozenset({"file", "title", "year", "medium", "size", "description"})
 ARTIST_FIELDS = frozenset({"name", "tagline", "email", "home_image", "links"})
@@ -97,7 +104,8 @@ def check_works(root: Path, section: str, problems: list[str]) -> None:
         if file.lower() in seen:
             problems.append(f'{where}: "{file}" is listed twice.')
         seen.add(file.lower())
-        if file.lower() not in keys:
+        # Deleting the placeholder pictures should not break anything
+        if file.lower() not in keys and not is_placeholder(file):
             problems.append(
                 f'{where}: there is no "{file}" in art/{section}. Check the spelling, '
                 "a file name needs its ending, like .jpg."

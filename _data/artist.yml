@@ -4,16 +4,18 @@
 name: "Vern Panter"
 
 # One line under the name on the home page.
-tagline: ""
+tagline: "Placeholder for a line about the work"
 
 # Shown on the contact page.
-email: ""
+email: "placeholder@example.com"
 
 # The picture on the home page, for example "art/2d/blue-door.jpg".
 # Left empty, the site uses the first 2D work, or the first 3D work.
 home_image: ""
 
-# Links on the contact page. Delete the [] and the # marks to use this.
-links: []
-#  - name: "Instagram"
-#    link: "https://www.instagram.com/your-name"
+# Links on the contact page. For none, use links: [] and delete the rest.
+links:
+  - name: "Placeholder for Instagram"
+    link: "https://example.com/instagram"
+  - name: "Placeholder for a shop"
+    link: "https://example.com/shop"
